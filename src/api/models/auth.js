@@ -10,7 +10,7 @@ const register = async (data) => {
             userID: data.userID,
             emailAddress: data.emailAddress,
             phoneNumber: data.phoneNumber,
-            type:data.type,
+            role:data.role,
             password: data.password,
             status: "active", 
             emailverify: false,
@@ -38,7 +38,7 @@ const getShortProfile = async (data) => {
         projection: {
           // to ask what the zeros and ones is for 
           _id: 0, userID: 1, userName:1,emailAddress: 1, phoneNumber: 1,  password: 1, status: 1, emailverify: 1,
-            firstName: 1, lastName: 1, country: 1, type:1,
+            firstName: 1, lastName: 1, country: 1, role:1,
         }
     };
     try {
@@ -61,32 +61,9 @@ const updatePasswordLoginUser = async (data) => {
     }
 }
 
-const addProfile = async (data) => {
-    let myquery = { userID: data.userID };
-    let newvalues = {
-        $set: {
-            fullName: data.fullName, userName: data.userName, phoneNumber: data.phoneNumber,
-            countryCode: data.countryCode, gender: data.gender, 
-            password: data.password, status: "active", emailverify: false,
-            profilePic: data.profilePic, registerDate: new Date(),
-            wallet: data.wallet, 
-            
-        }
-    };
-    let upsert = { upsert: true }
-    try {
-        const result = await DbConnection.updateData(userCollection, myquery, newvalues, upsert);
-        return ({ error: false, message: "sucessfully" })
-    } catch (error) {
-        return ({ error: true, message: error.message })
-    }
-}
-
-
 module.exports = {
     register,
     getShortProfile,
-    addProfile,
     updatePasswordLoginUser,
 }
 
